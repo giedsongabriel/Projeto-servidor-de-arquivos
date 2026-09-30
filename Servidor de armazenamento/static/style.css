@@ -1,0 +1,361 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #111827;
+
+    color: #f9fafb;
+}
+
+
+.explorer {
+
+    max-width: 1000px;
+
+    margin: 40px auto;
+
+    padding: 20px;
+}
+
+
+header {
+
+    margin-bottom: 20px;
+
+}
+
+
+header h1 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+}
+
+
+/* Barra */
+
+.barra {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: #1f2937;
+
+    padding: 12px 15px;
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.barra a {
+
+    color: #fff;
+
+    text-decoration: none;
+
+}
+
+
+.voltar {
+
+    background: #374151;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+}
+
+
+.voltar:hover {
+
+    background: #4b5563;
+
+}
+
+
+.caminho {
+
+    color: #9ca3af;
+
+}
+
+
+/* Itens */
+
+.item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: #1f2937;
+
+    padding: 15px;
+
+    margin-bottom: 8px;
+
+    border-radius: 7px;
+
+    color: white;
+
+}
+
+
+.item.pasta {
+
+    text-decoration: none;
+
+}
+
+
+.item.pasta:hover {
+
+    background: #273449;
+
+}
+
+
+.icone {
+
+    font-size: 22px;
+
+}
+
+
+.nome {
+
+    flex: 1;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.tipo,
+.tamanho {
+
+    color: #9ca3af;
+
+    font-size: 14px;
+
+}
+
+
+/* Download */
+
+.download {
+
+    background: #374151;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+}
+
+
+.download:hover {
+
+    background: #4b5563;
+
+}
+
+
+/* Pasta vazia */
+
+.vazio {
+
+    text-align: center;
+
+    padding: 50px;
+
+    color: #9ca3af;
+
+}
+.upload-box {
+    background: #1f2937;
+    padding: 15px;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+.upload-box form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+.upload-box input[type="file"]{
+    flex: 1;
+}
+.upload-box button {
+    border: none;
+    background: #374151;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 6px;
+    cursor: pointer
+}
+.upload-box button:hover {
+    background: #4b5563;
+}
+
+::file-selector-button {
+    border: none;
+    background: #2e3c52;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 6px;
+    cursor: pointer;         
+        }
+
+.arquivo.arrastando{
+    opacity: 0.5;
+}
+.pasta.recebendo{
+    background: #374151;
+    transform: scale(1.02);
+}
+.card-nova-pasta {
+    display: none;
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #374151;
+}
+
+.card-nova-pasta.aberto {
+    display: block;
+}
+
+.card-nova-pasta h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.card-nova-pasta input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    background: #111827;
+    color: white;
+    outline: none;
+}
+
+.acoes-pasta {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.acoes-pasta button {
+    border: none;
+    background: #374151;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.acoes-pasta button:hover {
+    background: #4b5563;
+}
+/* =============================== */
+/* MENU DE TRÊS PONTOS */
+/* =============================== */
+
+.menu-arquivo {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.menu-botao {
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 24px;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-botao:hover {
+    background: #374151;
+    color: white;
+}
+
+.menu-opcoes {
+    display: none;
+
+    position: absolute;
+    right: 0;
+    top: 40px;
+
+    min-width: 170px;
+
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+
+    padding: 5px;
+
+    z-index: 1000;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.menu-arquivo.aberto .menu-opcoes {
+    display: block;
+}
+
+.menu-opcoes button {
+    display: block;
+    width: 100%;
+
+    border: none;
+    background: transparent;
+    color: white;
+
+    text-align: left;
+
+    padding: 10px;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.menu-opcoes button:hover {
+    background: #374151;
+}
