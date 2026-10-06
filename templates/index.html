@@ -5,6 +5,12 @@
     content="width=device-width, initial-scale=1.0"
 >
 
+<!--
+    Interface principal do servidor de arquivos.
+
+    Este template utiliza Jinja2 para receber os dados enviados pelo Flask
+    e JavaScript para executar ações como copiar, mover, renomear e excluir.
+-->
 <title>Servidor de Arquivos</title>
 
 <link
@@ -19,10 +25,12 @@
 </header>
 
 
-<!-- Barra de navegação -->
+<!--
+    Barra de navegação:
+    mostra o caminho atual e disponibiliza a pesquisa dentro da pasta aberta.
+-->
 
 <div class="barra">
-
     <div class="caminho">
 
         <a href="{{ url_for('explorar') }}">
@@ -42,11 +50,40 @@
         {% endif %}
 
     </div>
+<form
+    class="barra-pesquisa"
+    action="{{ url_for('pesquisar') }}"
+    method="GET"
+>
 
+    <input
+        type="hidden"
+        name="caminho"
+        value="{{ caminho }}"
+    >
+
+    <input
+        type="text"
+        name="q"
+        placeholder="Procurando algo?"
+        value="{{ termo_pesquisa|default('') }}"
+        autocomplete="off"
+    >
+
+    <button type="submit">
+        Pesquisar
+    </button>
+
+</form>
 </div>
 
 
-<!-- Upload / Nova pasta / Colar -->
+<!--
+    Ações principais:
+    - upload de arquivos;
+    - criação de pastas;
+    - colagem de itens previamente copiados.
+-->
 
 <div class="upload-box">
 
@@ -162,7 +199,11 @@
 </div>
 
 
-<!-- Lista de arquivos e pastas -->
+<!--
+    Lista de conteúdo:
+    o Flask envia os itens encontrados na pasta atual e o Jinja2
+    decide se cada item será apresentado como arquivo ou pasta.
+-->
 
 <main>
 
@@ -407,6 +448,10 @@
 
 /* ========================================================= */
 /* ARRASTAR ARQUIVOS */
+/*
+ * Permite selecionar um arquivo e arrastá-lo para uma pasta.
+ * O caminho e o tipo do item são enviados ao backend pela rota /mover.
+ */
 /* ========================================================= */
 
 document.querySelectorAll(".arquivo").forEach(arquivo => {
@@ -439,6 +484,10 @@ document.querySelectorAll(".arquivo").forEach(arquivo => {
 
 /* ========================================================= */
 /* ARRASTAR PASTAS PELA ALÇA */
+/*
+ * A pasta possui uma área específica para iniciar o arrastamento.
+ * Isso evita conflito com o clique usado para abrir a pasta.
+ */
 /* ========================================================= */
 
 document.querySelectorAll(".arrastar-pasta").forEach(alca => {
@@ -477,6 +526,10 @@ document.querySelectorAll(".arrastar-pasta").forEach(alca => {
 
 /* ========================================================= */
 /* DESTINO DO ARRASTAMENTO */
+/*
+ * As pastas funcionam como destinos para arquivos e outras pastas.
+ * O backend é responsável por validar o caminho e realizar a movimentação.
+ */
 /* ========================================================= */
 
 document.querySelectorAll(".pasta").forEach(pasta => {
@@ -574,6 +627,9 @@ document.querySelectorAll(".pasta").forEach(pasta => {
 
 /* ========================================================= */
 /* MENU ⋮ */
+/*
+ * Controla o menu de ações de cada arquivo ou pasta.
+ */
 /* ========================================================= */
 
 function abrirMenu(event, botao) {
@@ -620,6 +676,10 @@ document.addEventListener("click", function() {
 
 /* ========================================================= */
 /* COPIAR */
+/*
+ * Envia ao Flask o caminho e o tipo do item selecionado.
+ * O backend guarda essas informações na sessão para a operação de colar.
+ */
 /* ========================================================= */
 
 function copiarItem(event, caminho, tipo) {
@@ -678,6 +738,9 @@ function copiarItem(event, caminho, tipo) {
 
 /* ========================================================= */
 /* RENOMEAR */
+/*
+ * Solicita o novo nome ao usuário e envia a alteração para o backend.
+ */
 /* ========================================================= */
 
 function renomearItem(event, caminho, tipo) {
@@ -769,6 +832,9 @@ function renomearItem(event, caminho, tipo) {
 
 /* ========================================================= */
 /* APAGAR */
+/*
+ * Solicita confirmação antes de enviar a exclusão para o backend.
+ */
 /* ========================================================= */
 
 function excluirItem(event, caminho, tipo) {
@@ -840,6 +906,9 @@ function excluirItem(event, caminho, tipo) {
 
 /* ========================================================= */
 /* NOVA PASTA */
+/*
+ * Controla a abertura e o fechamento do formulário de criação de pastas.
+ */
 /* ========================================================= */
 
 const btnNovaPasta =

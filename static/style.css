@@ -1,207 +1,167 @@
+/*
+ * Estilos da interface do servidor de arquivos.
+ *
+ * O arquivo contém somente regras visuais da aplicação. A lógica de
+ * navegação, upload e gerenciamento dos arquivos permanece no Flask
+ * (backend) e no JavaScript do template.
+ */
+
+
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+   ========================================================= */
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-
     font-family: Arial, sans-serif;
-
     background: #111827;
-
     color: #f9fafb;
 }
 
 
+/* =========================================================
+   CONTAINER PRINCIPAL
+   ========================================================= */
+
 .explorer {
-
     max-width: 1000px;
-
     margin: 40px auto;
-
     padding: 20px;
 }
 
 
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
 header {
-
     margin-bottom: 20px;
-
 }
-
 
 header h1 {
-
     margin: 0;
-
     font-size: 28px;
-
 }
 
 
-/* Barra */
+/* =========================================================
+   BARRA DE NAVEGAÇÃO
+   ========================================================= */
 
 .barra {
-
     display: flex;
-
     align-items: center;
-
     gap: 15px;
-
     background: #1f2937;
-
     padding: 12px 15px;
-
     border-radius: 8px;
-
     margin-bottom: 15px;
-
 }
-
 
 .barra a {
-
     color: #fff;
-
     text-decoration: none;
-
 }
-
 
 .voltar {
-
     background: #374151;
-
     padding: 8px 12px;
-
     border-radius: 6px;
-
 }
-
 
 .voltar:hover {
-
     background: #4b5563;
-
 }
-
 
 .caminho {
-
     color: #9ca3af;
-
 }
 
 
-/* Itens */
+/* =========================================================
+   ARQUIVOS E PASTAS
+   ========================================================= */
 
 .item {
-
     display: flex;
-
     align-items: center;
-
     gap: 15px;
-
     background: #1f2937;
-
     padding: 15px;
-
     margin-bottom: 8px;
-
     border-radius: 7px;
-
     color: white;
-
 }
-
 
 .item.pasta {
-
     text-decoration: none;
-
 }
-
 
 .item.pasta:hover {
-
     background: #273449;
-
 }
-
 
 .icone {
-
     font-size: 22px;
-
 }
-
 
 .nome {
-
     flex: 1;
-
     overflow: hidden;
-
     text-overflow: ellipsis;
-
     white-space: nowrap;
-
 }
-
 
 .tipo,
 .tamanho {
-
     color: #9ca3af;
-
     font-size: 14px;
-
 }
 
 
-/* Download */
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
 
 .download {
-
     background: #374151;
-
     color: white;
-
     text-decoration: none;
-
     padding: 8px 12px;
-
     border-radius: 6px;
-
 }
-
 
 .download:hover {
-
     background: #4b5563;
-
 }
 
 
-/* Pasta vazia */
+/* =========================================================
+   PASTA VAZIA
+   ========================================================= */
 
 .vazio {
-
     text-align: center;
-
     padding: 50px;
-
     color: #9ca3af;
-
 }
+
+
+/* =========================================================
+   ÁREA DE UPLOAD E AÇÕES
+   ========================================================= */
+
 .upload-box {
     background: #1f2937;
     padding: 15px;
     margin-bottom: 15px;
     gap: 10px;
 }
+
 .upload-box form {
     display: flex;
     align-items: center;
@@ -209,37 +169,55 @@ header h1 {
     flex-wrap: wrap;
     margin-bottom: 15px;
 }
-.upload-box input[type="file"]{
+
+.upload-box input[type="file"] {
     flex: 1;
 }
+
 .upload-box button {
     border: none;
     background: #374151;
     color: white;
     padding: 9px 15px;
     border-radius: 6px;
-    cursor: pointer
+    cursor: pointer;
 }
+
 .upload-box button:hover {
     background: #4b5563;
 }
 
+/* Personaliza o botão interno do seletor de arquivos. */
 ::file-selector-button {
     border: none;
     background: #2e3c52;
     color: white;
     padding: 9px 15px;
     border-radius: 6px;
-    cursor: pointer;         
-        }
+    cursor: pointer;
+}
 
-.arquivo.arrastando{
+
+/* =========================================================
+   ARRASTAR E SOLTAR
+   ========================================================= */
+
+/* Aparência do item enquanto ele está sendo arrastado. */
+.arquivo.arrastando {
     opacity: 0.5;
 }
-.pasta.recebendo{
+
+/* Destaca a pasta que está recebendo um item. */
+.pasta.recebendo {
     background: #374151;
     transform: scale(1.02);
 }
+
+
+/* =========================================================
+   FORMULÁRIO DE NOVA PASTA
+   ========================================================= */
+
 .card-nova-pasta {
     display: none;
     background: #1f2937;
@@ -249,6 +227,7 @@ header h1 {
     border: 1px solid #374151;
 }
 
+/* O JavaScript adiciona esta classe para exibir o formulário. */
 .card-nova-pasta.aberto {
     display: block;
 }
@@ -287,10 +266,16 @@ header h1 {
 .acoes-pasta button:hover {
     background: #4b5563;
 }
-/* =============================== */
-/* MENU DE TRÊS PONTOS */
-/* =============================== */
 
+
+/* =========================================================
+   MENU DE TRÊS PONTOS
+   ========================================================= */
+
+/*
+ * O menu fica posicionado em relação ao elemento que contém
+ * o botão de três pontos.
+ */
 .menu-arquivo {
     position: relative;
     flex-shrink: 0;
@@ -305,7 +290,6 @@ header h1 {
     height: 35px;
     border-radius: 6px;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -316,23 +300,18 @@ header h1 {
     color: white;
 }
 
+/* O menu permanece oculto até receber a classe "aberto". */
 .menu-opcoes {
     display: none;
-
     position: absolute;
     right: 0;
     top: 40px;
-
     min-width: 170px;
-
     background: #1f2937;
     border: 1px solid #374151;
     border-radius: 8px;
-
     padding: 5px;
-
     z-index: 1000;
-
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
@@ -343,19 +322,52 @@ header h1 {
 .menu-opcoes button {
     display: block;
     width: 100%;
-
     border: none;
     background: transparent;
     color: white;
-
     text-align: left;
-
     padding: 10px;
     border-radius: 6px;
-
     cursor: pointer;
 }
 
 .menu-opcoes button:hover {
     background: #374151;
+}
+
+
+/* =========================================================
+   BARRA DE PESQUISA
+   ========================================================= */
+
+.barra-pesquisa {
+    display: flex;
+    margin-left: auto;
+}
+
+.barra-pesquisa input {
+    width: 250px;
+    padding: 9px 12px;
+    border: 1px solid #374151;
+    border-radius: 6px 0 0 6px;
+    background: #111827;
+    color: white;
+    outline: none;
+}
+
+.barra-pesquisa input:focus {
+    border-color: #4b5563;
+}
+
+.barra-pesquisa button {
+    border: none;
+    background: #374151;
+    color: white;
+    padding: 0 13px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+}
+
+.barra-pesquisa button:hover {
+    background: #4b5563;
 }
