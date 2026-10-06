@@ -1,73 +1,202 @@
-**📁 Servidor de Arquivos**
+# Servidor de Arquivos
 
-Servidor de arquivos desenvolvido em Python + Flask, com interface web para gerenciamento de arquivos e pastas através do navegador.
+Servidor de arquivos feito em **Python + Flask** como projeto pessoal e de estudo.
 
-O projeto foi desenvolvido para facilitar o armazenamento, organização e compartilhamento de arquivos em uma rede, utilizando uma interface semelhante a um explorador de arquivos.
+A ideia é transformar um computador em um servidor onde seja possível acessar e organizar arquivos pelo navegador. Além do acesso local, o projeto possui uma automação que cria um endereço público usando o **Cloudflare Tunnel** e envia esse endereço por e-mail.
 
- **Funcionalidades:**
+## Sobre o projeto
 
-Atualmente, o sistema permite:
+Esse projeto foi feito principalmente para estudar e colocar em prática algumas tecnologias que eu estava aprendendo.
 
--  Navegar entre pastas e subpastas
--  Fazer upload de arquivos
--  Baixar arquivos
--  Criar novas pastas
--  Renomear arquivos e pastas
--  Excluir arquivos e pastas
--  Copiar e colar arquivos
--  Copiar e colar pastas
--  Arrastar arquivos para mover
--  Arrastar pastas através da alça de movimentação
--  Impedir sobrescrita de arquivos durante operações de cópia
--  Impedir que uma pasta seja copiada ou movida para dentro dela mesma
--  Menu de ações para arquivos e pastas
+Com ele, é possível:
 
-**Tecnologias**
+* visualizar arquivos e pastas;
+* enviar arquivos;
+* baixar arquivos;
+* criar pastas;
+* renomear arquivos e pastas;
+* excluir arquivos e pastas;
+* copiar e colar;
+* mover arquivos;
+* pesquisar arquivos.
 
-- Python
-- Flask
-- HTML5
-- CSS3
-- JavaScript
+A aplicação roda localmente usando Flask e pode ser acessada pelo navegador.
 
-⚙️ Configuração
+## Tecnologias
 
-O sistema utiliza uma pasta do computador como armazenamento dos arquivos.
+* Python
+* Flask
+* HTML
+* CSS
+* JavaScript
+* PowerShell
+* Cloudflare Tunnel
+* Gmail SMTP
+* NSSM
 
-No arquivo "app.py", a pasta pode ser definida através da variável:
+## Estrutura
 
-PASTA_ARQUIVOS = r"C:\um teste para o servidor"
+```text
+servidor-de-arquivos/
+│
+├── app.py
+│
+├── templates/
+│   └── index.html
+│
+├── static/
+│   └── style.css
+│
+├── scripts/
+│   ├── trycloudflared.ps1
+│   ├── enviar_email.py
+│   └── link.txt
+│
+├── arquivos/
+│
+├── .env
+└── .gitignore
+```
 
-Altere esse caminho para a pasta que deseja disponibilizar através do servidor.
+## Como funciona
 
-**Como executar**
-1. Instale o Python
+A aplicação principal está no `app.py`.
 
-Certifique-se de que o Python esteja instalado no computador.
+Ele inicia o servidor Flask na porta `5000`:
 
-2. Instale o Flask
+```text
+http://localhost:5000
+```
 
-No terminal:
+A interface é feita com HTML, CSS e JavaScript e funciona como um pequeno explorador de arquivos.
 
-pip install flask
+### Acesso externo
 
-3. Execute o servidor
+Para acessar o servidor de fora da rede, o projeto utiliza o `cloudflared`.
 
-Dentro da pasta do projeto:
+O script:
 
+```text
+scripts/trycloudflared.ps1
+```
+
+inicia o Flask e depois executa:
+
+```text
+cloudflared tunnel --url http://localhost:5000
+```
+
+O Cloudflare gera um endereço temporário parecido com:
+
+```text
+https://exemplo.trycloudflare.com
+```
+
+O script identifica esse endereço e salva em:
+
+```text
+scripts/link.txt
+```
+
+### Envio do link por e-mail
+
+Depois que o endereço é encontrado, o `trycloudflared.ps1` chama:
+
+```text
+scripts/enviar_email.py
+```
+
+O endereço é passado para o script:
+
+```text
+python enviar_email.py "https://exemplo.trycloudflare.com"
+```
+
+O `enviar_email.py` utiliza o SMTP do Gmail para enviar o endereço para o e-mail configurado.
+
+O fluxo fica basicamente assim:
+
+```text
+Windows
+   ↓
+trycloudflared.ps1
+   ↓
+app.py
+   ↓
+Cloudflare Tunnel
+   ↓
+link.txt
+   ↓
+enviar_email.py
+   ↓
+E-mail com o link
+```
+
+## Configuração do e-mail
+
+As informações do Gmail ficam em um arquivo `.env`.
+
+Exemplo:
+
+```env
+GMAIL_USUARIO=seu_email@gmail.com
+GMAIL_SENHA_APP=sua_senha_de_app
+EMAIL_DESTINO=destinatario@example.com
+```
+
+## Executando
+
+Primeiro, instale as dependências:
+
+```bash
+pip install flask python-dotenv
+```
+
+Depois execute:
+
+```bash
 python app.py
+```
 
-O servidor poderá ser acessado pelo navegador através do endereço exibido pelo Flask, normalmente:
+Acesse:
 
-http://127.0.0.1:5000
+```text
+http://localhost:5000
+```
 
-**Objetivo**
+## Usando o Cloudflare
 
-O objetivo do projeto é desenvolver uma solução de gerenciamento e compartilhamento de arquivos através de uma interface web, permitindo que usuários possam acessar e administrar arquivos sem precisar utilizar diretamente o sistema de arquivos do computador servidor.
+Para iniciar também o acesso externo:
 
----
+```powershell
+.\scripts\trycloudflared.ps1
+```
 
+É necessário ter o `cloudflared` instalado e disponível no sistema.
 
-Em desenvolvimento 🚧
+O script fica responsável por iniciar o servidor, criar o túnel, encontrar a URL e iniciar o envio do e-mail.
 
-Novas funcionalidades serão adicionadas conforme o desenvolvimento do projeto.
+## Inicialização automática
+
+No Windows, utilizei o **NSSM** para transformar o `trycloudflared.ps1` em um serviço.
+
+Assim, o processo pode ser iniciado automaticamente junto com o computador:
+
+```text
+Windows inicia
+      ↓
+NSSM
+      ↓
+trycloudflared.ps1
+      ↓
+Servidor + Cloudflare + e-mail
+```
+
+Essa parte é opcional. Também é possível executar o projeto manualmente.
+
+## Observações
+
+O projeto foi feito para **estudo e uso pessoal**. Não foi pensado inicialmente como uma solução pronta para produção.
+
+Principalmente ao utilizar o Cloudflare Tunnel, é importante ter cuidado com os arquivos que ficam disponíveis, já que o endereço gerado permite acesso ao servidor.
+
